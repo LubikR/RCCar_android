@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">RC Car</string>
+
+    <string name="forward">dopredu</string>
+    <string name="back">dozadu</string>
+    <string name="right">vpravo</string>
+    <string name="left">vlevo</string>
+
+    <string name="speed">rychlost</string>
+
+    <string name="not_LE">Není Bluetooth device!</string>
+    <string name="not_BLE">Není BLE device!</string>
+    <string name="BT_already_ON">Bluetooth je již zapnut</string>
+    <string name="BT_ON">Bluetooth zapnut</string>
+    <string name="BT_OFF">Bluetooth vypnut</string>
+    <string name="title_activity_bluetooth">BluetoothActivity</string>
+
+    <string name="bt_settings">Nastavení BT</string>
+
+    <string name="scan_start">Scan zahájen</string>
+    <string name="scan_stop">Scan ukončen</string>
+
+</resources>
