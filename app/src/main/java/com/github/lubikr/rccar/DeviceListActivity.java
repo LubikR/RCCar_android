@@ -13,7 +13,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.ParcelUuid;
 import android.view.View;
 import android.widget.Toast;
 
@@ -28,12 +27,12 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import java.util.ArrayList;
 import java.util.List;
 
-public class DeviceListAcivity extends AppCompatActivity {
-    private final String TAG = DeviceListAcivity.class.getSimpleName();
+public class DeviceListActivity extends AppCompatActivity {
+    private final String TAG = DeviceListActivity.class.getSimpleName();
 
-    private final static int REQUEST_ENABLE_BT = 1; // used to identify adding bluetooth names
     private static final long SCAN_PERIOD = 5000; // Stops BLE scanning after 5 seconds.
-    private static final String SERIAL_SERVICE_UUID = "0000ffe1-0000-1000-8000-00805f9b34fb"; //Serial port according to bluetooth.org
+    // For filtering
+    // private static final String SERIAL_SERVICE_UUID = "0000ffe1-0000-1000-8000-00805f9b34fb";
 
     private BluetoothAdapter bluetoothAdapter;
     private RecyclerView recyclerView;
@@ -102,7 +101,6 @@ public class DeviceListAcivity extends AppCompatActivity {
                 recycleViewAdapter.notifyDataSetChanged();
             }
         });
-
         setBluetoothON();
     }
 
@@ -113,7 +111,7 @@ public class DeviceListAcivity extends AppCompatActivity {
         final BluetoothLeScanner bluetoothLeScanner = bluetoothAdapter.getBluetoothLeScanner();
 
         // Filter devices with Serial port only!!!
-        ScanFilter scanFilter = new ScanFilter.Builder().setServiceUuid(ParcelUuid.fromString(SERIAL_SERVICE_UUID)).build();
+        //ScanFilter scanFilter = new ScanFilter.Builder().setServiceUuid(ParcelUuid.fromString(SERIAL_SERVICE_UUID)).build();
         List<ScanFilter> scanFilterList = new ArrayList<>();
         //scanFilterList.add(scanFilter);
         ScanSettings scanSettings = new ScanSettings.Builder().build();
@@ -127,11 +125,11 @@ public class DeviceListAcivity extends AppCompatActivity {
                 }
             }, SCAN_PERIOD);
                 bluetoothLeScanner.startScan(scanFilterList, scanSettings, leScanCallback);
-                Toast.makeText(this, R.string.scan_start, Toast.LENGTH_SHORT);
+                Toast.makeText(this, R.string.scan_start, Toast.LENGTH_SHORT).show();
             }
             else {
                 bluetoothLeScanner.stopScan(leScanCallback);
-                Toast.makeText(this, R.string.scan_stop, Toast.LENGTH_LONG);
+                Toast.makeText(this, R.string.scan_stop, Toast.LENGTH_SHORT).show();
             }
     }
 

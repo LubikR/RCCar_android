@@ -1,5 +1,6 @@
 package com.github.lubikr.rccar;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
@@ -18,7 +19,9 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,14 +38,11 @@ public class MainActivity extends AppCompatActivity {
     private final String LEFT = "L";
     private final String BACKWARD = "B";
     private final String STOP = "S";
-
-    private Button btn_forward;
-    private Button btn_back;
-    private Button btn_left;
-    private Button btn_right;
+    private final String SPEED = "X";
+    ;
     private TextView connectionState_TextView;
-    private Toolbar toolbar;
     private boolean connected = false;
+
 
     private BluetoothLeService serialBlePort;
     private BluetoothGattCharacteristic characteristicTX;
@@ -77,19 +77,21 @@ public class MainActivity extends AppCompatActivity {
         return intentFilter;
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        toolbar = findViewById(R.id.Toolbar);
+        Toolbar toolbar = findViewById(R.id.Toolbar);
+        setSupportActionBar(toolbar);
 
         Intent bindIntent = new Intent(this, BluetoothLeService.class);
         bindService(bindIntent, serviceConnection, Context.BIND_AUTO_CREATE);
 
         connectionState_TextView = findViewById(R.id.connectionState_TextView);
 
-        btn_forward = findViewById(R.id.Btn_forward);
+        Button btn_forward = findViewById(R.id.Btn_forward);
         btn_forward.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -98,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btn_left = findViewById(R.id.Btn_left);
+        Button btn_left = findViewById(R.id.Btn_left);
         btn_left.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -107,7 +109,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btn_right = findViewById(R.id.Btn_right);
+        Button btn_right = findViewById(R.id.Btn_right);
         btn_right.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -116,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btn_back = findViewById(R.id.Btn_back);
+        Button btn_back = findViewById(R.id.Btn_back);
         btn_back.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -124,18 +126,38 @@ public class MainActivity extends AppCompatActivity {
                 return false;
             }
         });
-    }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        registerReceiver(broadcastReceiver,makeBroadcastReceiverFilter());
-    }
+        SeekBar seekBar = findViewById(R.id.seekBar);
+        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            int progress = 0;
+            String last_progress = "";
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+                if (connected) {
+                    // Need 5 steps, so 255/5 = 51
+                    progress = progress / 51;
+                    progress = progress * 51;
+                    this.progress = progress;
+                    String toSend = SPEED + String.format("%03d", progress);
+                    if (!toSend.equals(last_progress)) {
+                        last_progress = toSend;
+                        serialBlePort.send(toSend);
+                    }
+                }
+                else {
+                    Toast.makeText(getBaseContext(), getString(R.string.not_connected), Toast.LENGTH_SHORT).show();
+                    seekBar.setProgress(0);
+                }
+            }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        unregisterReceiver(broadcastReceiver);
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar) {
+            }
+        });
     }
 
     private void btn_fce (@NotNull MotionEvent event, String direction) {
@@ -149,8 +171,20 @@ public class MainActivity extends AppCompatActivity {
             }
         }
         else {
-            //TODO make toast to user
+            Toast.makeText(this, getString(R.string.not_connected), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(broadcastReceiver,makeBroadcastReceiverFilter());
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(broadcastReceiver);
     }
 
     @Override
@@ -169,7 +203,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        Intent intent =  new Intent(MainActivity.this, DeviceListAcivity.class);
+        Intent intent =  new Intent(MainActivity.this, DeviceListActivity.class);
         startActivityForResult(intent, REQUEST_DEVICE);
         return true;
     }
@@ -193,8 +227,8 @@ public class MainActivity extends AppCompatActivity {
                 final String text;
                 switch (action) {
                     case BluetoothLeService.ACTION_GATT_CONNECTED:
-                        text = getString(R.string.connected);
-                        connected = true;
+                        text = getString(R.string.connecting);
+                        connected = false;
                         break;
                     case BluetoothLeService.ACTION_GATT_DISCONNECTED:
                         text = getString(R.string.disconnected);
@@ -213,6 +247,7 @@ public class MainActivity extends AppCompatActivity {
                     public void run() {
                         connectionState_TextView.setText(text);
                         if (text.equals(getString(R.string.connected))) connectionState_TextView.setTextColor(getResources().getColor(R.color.greenText));
+                        else if (text.equals(R.string.connecting)) connectionState_TextView.setTextColor(getResources().getColor(R.color.yellowText));
                         else connectionState_TextView.setTextColor(getResources().getColor(R.color.redText));
                     }
                 });

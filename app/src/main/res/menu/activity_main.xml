@@ -3,6 +3,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:icon="@mipmap/bt_settings"
-        android:title="@string/bt_settings"
+        android:title="@string/bt_menu_icon"
         app:showAsAction="always" />
 </menu>

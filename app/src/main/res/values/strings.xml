@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">RC Car</string>
+    <string name="BT_Activity_name">RC Car - find BLE device</string>
+    <string name="bt_menu_icon">Nastavení BT</string>
 
     <string name="forward">dopredu</string>
     <string name="back">dozadu</string>
@@ -13,16 +15,14 @@
     <string name="BT_already_ON">Bluetooth je již zapnut</string>
     <string name="BT_ON">Bluetooth zapnut</string>
     <string name="BT_OFF">Bluetooth vypnut</string>
-    <string name="title_activity_bluetooth">BluetoothActivity</string>
-
-    <string name="bt_settings">Nastavení BT</string>
 
     <string name="scan_start">Scan zahájen</string>
     <string name="scan_stop">Scan ukončen</string>
 
     <string name="connected">Connected</string>
+    <string name="connecting">Connecting</string>
     <string name="disconnected">Disconected</string>
 
-    <string name="NotConnected">Nejsi připojen</string>
+    <string name="not_connected">Not Connected!</string>
 
 </resources>

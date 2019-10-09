@@ -13,6 +13,8 @@ import android.content.Intent;
 import android.os.Binder;
 import android.os.IBinder;
 
+import org.jetbrains.annotations.NotNull;
+
 import java.util.UUID;
 
 public class BluetoothLeService extends Service {
@@ -47,7 +49,7 @@ public class BluetoothLeService extends Service {
         bluetoothAdapter = bluetoothManager.getAdapter();
     }
 
-    public void connectGatt(BluetoothDevice device) {
+    public void connectGatt(@NotNull BluetoothDevice device) {
         gatt = device.connectGatt(this, false, gattCallback);
     }
 
@@ -98,14 +100,9 @@ public class BluetoothLeService extends Service {
             super.onServicesDiscovered(gatt, status);
 
             if (status == BluetoothGatt.GATT_SUCCESS) {
-                broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
                 tx =  gatt.getService(SERIAL_SERVICE_UUID).getCharacteristic(TX_CHAR_UUID);
+                broadcastUpdate(ACTION_GATT_SERVICES_DISCOVERED);
             }
-        }
-
-        @Override
-        public void onCharacteristicWrite(BluetoothGatt gatt, BluetoothGattCharacteristic characteristic, int status) {
-            super.onCharacteristicWrite(gatt, characteristic, status);
         }
 
         private void broadcastUpdate(final String action) {
