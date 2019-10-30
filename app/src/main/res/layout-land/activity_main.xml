@@ -60,6 +60,39 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
+            android:id="@+id/Btn_LeftLED"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/btn_LeftLED"
+            app:layout_constraintEnd_toStartOf="@+id/Btn_Lights"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/Btn_RightLED"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/btn_LeftRIGHT"
+            app:layout_constraintEnd_toStartOf="@+id/divider4"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/Btn_Lights"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/Btn_Lights"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="@string/btn_Lights"
+            app:layout_constraintEnd_toStartOf="@+id/Btn_RightLED"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toEndOf="@+id/Btn_LeftLED"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
             android:id="@+id/Btn_forward"
             android:layout_width="wrap_content"
             android:layout_height="0dp"
@@ -121,19 +154,19 @@
             style="@style/Widget.AppCompat.SeekBar.Discrete"
             android:layout_width="254dp"
             android:layout_height="220dp"
+            android:layout_marginBottom="8dp"
             android:indeterminate="false"
             android:max="255"
             android:progress="0"
+            android:progressDrawable="@drawable/seekbar_progress"
             android:rotation="270"
+            android:thumb="@mipmap/baseline_dehaze_black_18dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@+id/divider4"
             app:layout_constraintHorizontal_bias="0.0"
             app:layout_constraintStart_toStartOf="@+id/divider3"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.56"
-            android:progressDrawable="@drawable/seekbar_progress"
-            android:thumb="@mipmap/baseline_dehaze_black_18dp"
-            />
+            app:layout_constraintVertical_bias="0.75" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

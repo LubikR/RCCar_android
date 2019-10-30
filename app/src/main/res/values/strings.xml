@@ -25,4 +25,8 @@
 
     <string name="not_connected">Not Connected!</string>
 
+    <string name="btn_LeftLED">Vlevo</string>
+    <string name="btn_LeftRIGHT">Vpravo</string>
+    <string name="btn_Lights">Světla</string>
+
 </resources>

@@ -39,7 +39,10 @@ public class MainActivity extends AppCompatActivity {
     private final String BACKWARD = "B";
     private final String STOP = "S";
     private final String SPEED = "X";
-    ;
+    private final String LED_LEFT = "A";
+    private final String LED_RIGHT = "D";
+    private final String LED_LIGHTS = "W";
+
     private TextView connectionState_TextView;
     private boolean connected = false;
 
@@ -127,6 +130,30 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button btn_LeftLED = findViewById(R.id.Btn_LeftLED);
+        btn_LeftLED.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                send(LED_LEFT);
+            }
+        });
+
+        Button btn_RightLED = findViewById(R.id.Btn_RightLED);
+        btn_RightLED.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                send(LED_RIGHT);
+            }
+        });
+
+        Button btn_Lights = findViewById(R.id.Btn_Lights);
+        btn_Lights.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                send(LED_LIGHTS);
+            }
+        });
+
         SeekBar seekBar = findViewById(R.id.seekBar);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             int progress = 0;
@@ -169,6 +196,15 @@ public class MainActivity extends AppCompatActivity {
             if (action == MotionEvent.ACTION_UP) {
                 serialBlePort.send(STOP);
             }
+        }
+        else {
+            Toast.makeText(this, getString(R.string.not_connected), Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    private void send (String text) {
+        if (connected) {
+            serialBlePort.send(text);
         }
         else {
             Toast.makeText(this, getString(R.string.not_connected), Toast.LENGTH_SHORT).show();
