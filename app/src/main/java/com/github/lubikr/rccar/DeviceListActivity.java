@@ -30,7 +30,7 @@ import java.util.List;
 public class DeviceListActivity extends AppCompatActivity {
     private final String TAG = DeviceListActivity.class.getSimpleName();
 
-    private static final long SCAN_PERIOD = 5000; // Stops BLE scanning after 5 seconds.
+    private static final long SCAN_PERIOD = 15000; // Stops BLE scanning after 5 seconds.
     // For filtering
     // private static final String SERIAL_SERVICE_UUID = "0000ffe1-0000-1000-8000-00805f9b34fb";
 

@@ -46,7 +46,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView connectionState_TextView;
     private boolean connected = false;
 
-
     private BluetoothLeService serialBlePort;
     private BluetoothGattCharacteristic characteristicTX;
 
